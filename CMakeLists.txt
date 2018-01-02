@@ -7,4 +7,4 @@ include_directories(${Boost_INCLUDE_DIR})
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Client main.cpp)
+add_executable(Client src/main.cpp src/connectionHandler.cpp src/echoClient.cpp)
