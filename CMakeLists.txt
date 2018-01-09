@@ -1,9 +1,22 @@
-project(Client)
-set(Boost_INCLUDE_DIR /home/tal/Downloads/boost_1_66_0)
-set(Boost_LIBRARY_DIR /home/tal/Downloads/boost_1_66_0)
-find_package(Boost)
-include_directories(${Boost_INCLUDE_DIR})
+cmake_minimum_required(VERSION 3.8)
+project(Assignment3)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 
-add_executable(Client src/main.cpp src/connectionHandler.cpp src/echoClient.cpp)
+set(SOURCE_FILES src/connectionHandler.cpp include/connectionHandler.h src/echoClient.cpp src/Task.cpp include/Task.h)
+
+find_package(Boost COMPONENTS system thread REQUIRED)
+
+if (Boost_FOUND)
+    message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+    message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")
+    message(STATUS "Boost_VERSION: ${Boost_VERSION}")
+    include_directories(${Boost_INCLUDE_DIR})
+endif ()
+
+add_executable(Assignment3 ${SOURCE_FILES})
+
+if (Boost_FOUND)
+    target_link_libraries(Assignment3 ${Boost_LIBRAIRES})
+endif ()
