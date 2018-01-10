@@ -12,7 +12,7 @@ using std::cerr;
 using std::endl;
 using std::string;
 
-Task::Task(ConnectionHandler *connectionHandler) : connectionHandler(connectionHandler) {}
+Task::Task(ConnectionHandler *connectionHandler, std::atomic<bool> *loggedIn) : connectionHandler(connectionHandler), loggedIn(loggedIn) {}
 
 void Task::sendMsg() {
     while (1) {
@@ -27,7 +27,7 @@ void Task::sendMsg() {
         }
         // connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
         std::cout << "Sent " << len + 1 << " bytes to server" << std::endl;
-        if (line == "signout")
+        if (line == "SIGNOUT" && loggedIn)
             break;
     }
 }

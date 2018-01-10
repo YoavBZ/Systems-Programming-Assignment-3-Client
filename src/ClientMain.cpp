@@ -21,10 +21,13 @@ int main (int argc, char *argv[]) {
     }
 
     std::cout << "Starting Task thread" << std::endl;
-    Task task(&connectionHandler);
-    boost::thread thread1(boost::bind(&Task::sendMsg, &task));
 
-	//From here we will see the rest of the ehco client implementation:
+    std::atomic<bool> loggedIn(false);
+
+    Task task(&connectionHandler, &loggedIn);
+    boost::thread inputThread(boost::bind(&Task::sendMsg, &task));
+
+    //From here we will see the rest of the client implementation:
     while (1) {
 
         // We can use one of three options to read data from the server:
@@ -44,11 +47,12 @@ int main (int argc, char *argv[]) {
 		// we filled up to the \n char - we must make sure now that a 0 char is also present. So we truncate last character.
         answer.resize(len-1);
         std::cout << "Reply: " << answer << " " << len << " bytes " << std::endl << std::endl;
-        if (answer == "ACK signout succeeded") {
+        if (answer == "ACK login succeeded") {
+            loggedIn = true;
+        } else if (answer == "ACK signout succeeded") {
             std::cout << "Exiting...\n" << std::endl;
             break;
         }
     }
-    thread1.join();
     return 0;
 }
