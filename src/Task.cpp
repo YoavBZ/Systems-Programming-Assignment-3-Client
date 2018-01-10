@@ -12,7 +12,6 @@ using std::cerr;
 using std::endl;
 using std::string;
 
-
 Task::Task(ConnectionHandler *connectionHandler) : connectionHandler(connectionHandler) {}
 
 void Task::sendMsg() {
@@ -28,6 +27,7 @@ void Task::sendMsg() {
         }
         // connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
         std::cout << "Sent " << len + 1 << " bytes to server" << std::endl;
+        if (line == "signout")
+            break;
     }
-    boost::this_thread::yield(); //Gives up the remainder of the current thread's time slice, to allow other threads to run.
 }

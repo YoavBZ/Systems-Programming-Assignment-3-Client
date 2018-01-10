@@ -1,6 +1,6 @@
 #include <cstdlib>
+#include <boost/asio.hpp>
 #include <boost/thread.hpp>
-#include "../include/connectionHandler.h"
 #include "../include/Task.h"
 
 /**
@@ -13,18 +13,20 @@ int main (int argc, char *argv[]) {
     }
     std::string host = argv[1];
     short port = atoi(argv[2]);
-    
+
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {
         std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
         return 1;
     }
-    Task task1(&connectionHandler);
 
-    boost::thread thread1(&task1);
+    std::cout << "Starting Task thread" << std::endl;
+    Task task(&connectionHandler);
+    boost::thread thread1(boost::bind(&Task::sendMsg, &task));
+
 	//From here we will see the rest of the ehco client implementation:
     while (1) {
- 
+
         // We can use one of three options to read data from the server:
         // 1. Read a fixed number of characters
         // 2. Read a line (up to the newline character using the getline() buffered reader
@@ -47,5 +49,6 @@ int main (int argc, char *argv[]) {
             break;
         }
     }
+    thread1.join();
     return 0;
 }
