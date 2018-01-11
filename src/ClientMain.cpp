@@ -51,6 +51,7 @@ int main (int argc, char *argv[]) {
             loggedIn = true;
         } else if (answer == "ACK signout succeeded") {
             std::cout << "Exiting...\n" << std::endl;
+            inputThread.join();
             break;
         }
     }
