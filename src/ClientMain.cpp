@@ -20,8 +20,6 @@ int main (int argc, char *argv[]) {
         return 1;
     }
 
-    std::cout << "Starting Task thread" << std::endl;
-
     std::atomic<bool> loggedIn(false);
 
     Task task(&connectionHandler, &loggedIn);
