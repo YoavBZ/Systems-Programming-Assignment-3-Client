@@ -7,11 +7,11 @@ class Task {
 private:
 
     ConnectionHandler *connectionHandler;
-    std::atomic<bool> *loggedIn;
+    std::atomic<bool> *shouldTerminate;
 
 public:
 
-    Task(ConnectionHandler *connectionHandler, std::atomic<bool> *loggedIn);
+    Task(ConnectionHandler *connectionHandler, std::atomic<bool> *shouldTerminate);
     void sendMsg();
 };
 
